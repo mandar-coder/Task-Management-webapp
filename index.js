@@ -2,6 +2,29 @@
 const taskContainer =document.querySelector(".task__container");
 let golbalTaskData = [];
 
+const generateHTML=(taskData) =>{
+  `<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
+<div class="card ">
+  <div class="card-header d-flex justify-content-end gap-2">
+    <button class="btn btn-outline-info"><i class="fas fa-pencil-alt"></i></button>
+    <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+  </div>
+  <div class="card-body">
+    <img  class="card-img" src="${taskData.image}" alt="image">
+    <h5 class="card-title p-2">${taskData.title}</h5>
+    <p class="card-text">${taskData.discription}</p>
+   <span class="badge bg-primary">${taskData.type}</span>
+  </div>
+  <div class="card-footer">
+   <button class="btn btn-primary">open Task</button>
+  </div>
+</div>
+</div>`;
+}
+
+const getinDOM =(contant) =>{
+  taskContainer.insertAdjacentHTML("beforeEnd", newCard);
+}
 
 const addNewcard = () => {
     //get task data
@@ -21,27 +44,11 @@ const addNewcard = () => {
 
 //generate html code
 
-const newCard =`<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
-<div class="card ">
-  <div class="card-header d-flex justify-content-end gap-2">
-    <button class="btn btn-outline-info"><i class="fas fa-pencil-alt"></i></button>
-    <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-  </div>
-  <div class="card-body">
-    <img  class="card-img" src="${taskData.image}" alt="image">
-    <h5 class="card-title p-2">${taskData.title}</h5>
-    <p class="card-text">${taskData.discription}</p>
-   <span class="badge bg-primary">${taskData.type}</span>
-  </div>
-  <div class="card-footer">
-   <button class="btn btn-primary">open Task</button>
-  </div>
-</div>
-</div>`;
+const newCard = generateHTML(taskData);
 
 //inject html in dom
 
-taskContainer.insertAdjacentHTML("beforeEnd", newCard);
+getinDOM(newCard);
 
                       
 // //clear the form
@@ -69,25 +76,9 @@ const loadExistData = () =>{
   golbalTaskData.map((taskData) =>{
     //generate html page for those data
   
-    const newCard =`<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
-    <div class="card ">
-      <div class="card-header d-flex justify-content-end gap-2">
-        <button class="btn btn-outline-info"><i class="fas fa-pencil-alt"></i></button>
-        <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-      </div>
-      <div class="card-body">
-        <img  class="card-img" src="${taskData.image}" alt="image">
-        <h5 class="card-title p-2">${taskData.title}</h5>
-        <p class="card-text">${taskData.discription}</p>
-       <span class="badge bg-primary">${taskData.type}</span>
-      </div>
-      <div class="card-footer">
-       <button class="btn btn-primary">open Task</button>
-      </div>
-    </div>
-    </div>`;
+    const newCard = generateHTML(taskData);
   //insert in dom
-  taskContainer.insertAdjacentHTML("beforeEnd", newCard);
+  getinDOM(newCard);;
  });
  return;
 };

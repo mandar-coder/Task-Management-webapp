@@ -2,7 +2,7 @@
 const taskContainer =document.querySelector(".task__container");
 let golbalTaskData = [];
 
-const generateHTML=(taskData) =>{
+const generateHTML=(taskData) =>
   `<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
 <div class="card ">
   <div class="card-header d-flex justify-content-end gap-2">
@@ -20,10 +20,10 @@ const generateHTML=(taskData) =>{
   </div>
 </div>
 </div>`;
-}
+
 
 const getinDOM =(contant) =>{
-  taskContainer.insertAdjacentHTML("beforeEnd", newCard);
+  taskContainer.insertAdjacentHTML("beforeEnd", contant);
 }
 
 const addNewcard = () => {

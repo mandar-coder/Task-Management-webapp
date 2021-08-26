@@ -1,13 +1,13 @@
 
 const taskContainer =document.querySelector(".task__container");
 let golbalTaskData = [];
-
+//Function decleration
 const generateHTML=(taskData) =>
   `<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
 <div class="card ">
   <div class="card-header d-flex justify-content-end gap-2">
     <button class="btn btn-outline-info"><i class="fas fa-pencil-alt"></i></button>
-    <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+    <button class="btn btn-outline-danger" name=${taskData.id} onclick="deleteCard.apply(this, arguments)"><i class="fas fa-trash" name=${taskData.id}></i></button>
   </div>
   <div class="card-body">
     <img  class="card-img" src="${taskData.image}" alt="image">
@@ -26,6 +26,10 @@ const getinDOM =(contant) =>{
   taskContainer.insertAdjacentHTML("beforeEnd", contant);
 }
 
+const saveToLocalStorage = () =>
+localStorage.setItem("taskyCA", JSON .stringify({card:golbalTaskData}));
+
+//------------------------------------------------------------------------
 const addNewcard = () => {
     //get task data
     const taskData ={
@@ -40,7 +44,7 @@ const addNewcard = () => {
     golbalTaskData.push(taskData);
 
     //add data to local storage
-    localStorage.setItem("taskyCA", JSON .stringify({card:golbalTaskData}));
+    saveToLocalStorage();
 
 //generate html code
 
@@ -78,7 +82,29 @@ const loadExistData = () =>{
   
     const newCard = generateHTML(taskData);
   //insert in dom
-  getinDOM(newCard);;
+  getinDOM(newCard);
  });
  return;
+};
+//delete task 
+const deleteCard = (event) => {
+  //get task using name
+  const targetID = event.target.getAttribute("name");
+  const elementType = event.target.tagName;
+
+  const removetask = golbalTaskData.filter((task) => task.id !=targetID);
+  golbalTaskData = removetask;
+  saveToLocalStorage();
+
+  //remove task from DOM
+  if (elementType ==="BUTTON"){
+  return taskContainer.removeChild(
+    event.target.parentNode.parentNode.parentNode
+  );
+  }
+ else{
+    return taskContainer.removeChild(
+      event.target.parentNode.parentNode.parentNode.parentNode
+    );
+    }
 };

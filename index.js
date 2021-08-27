@@ -6,7 +6,7 @@ const generateHTML=(taskData) =>
   `<div id=${taskData.id} class="col-md-6 col-lg-4 my-4">
 <div class="card ">
   <div class="card-header d-flex justify-content-end gap-2">
-    <button class="btn btn-outline-info name=${taskData.id}"><i class="fas fa-pencil-alt" name=${taskData.id}" onclick="editCard.apply(this, arguments)"></i></button>
+    <button class="btn btn-outline-info name=${taskData.id}"><i class="fas fa-pencil-alt" name=${taskData.id} onclick="editCard.apply(this, arguments)"></i></button>
     <button class="btn btn-outline-danger" name=${taskData.id} onclick="deleteCard.apply(this, arguments)"><i class="fas fa-trash" name=${taskData.id}></i></button>
   </div>
   <div class="card-body">
@@ -16,7 +16,7 @@ const generateHTML=(taskData) =>
    <span class="badge bg-primary">${taskData.type}</span>
   </div>
   <div class="card-footer">
-   <button class="btn btn-primary">Open Task</button>
+   <button class="btn btn-primary" name=${taskData.id}>Open Task</button>
   </div>
 </div>
 </div>`;
@@ -132,19 +132,14 @@ const editCard =(event) =>{
     taskTitle.setAttribute("contenteditable", "true");
     taskType.setAttribute("contenteditable", "true");
     taskDiscription.setAttribute("contenteditable", "true");
-    submitButton.setAttribute("onclick","saveEdit.apply(this, arguments)")
+    submitButton.setAttribute("onclick", "saveEdit.apply(this, arguments)");
     submitButton.innerHTML = "Save changes";
-};
-     
-const updatedData = {
-  title: taskTitle.innerHTML,
-  type: taskType.innerHTML,
-  description: taskDescription.innerHTML,
 };
 //save changes after click on save changes
   const saveEdit = (event) =>{
   const targetID = event.target.getAttribute("name");
-  
+  const elementType = event.target.tagName;
+
   let parentElement;
 
   if(elementType === "BUTTON"){
@@ -153,19 +148,28 @@ const updatedData = {
       parentElement = event.target.parentNode.parentNode.parentNode;
     }
 
-  const elementType = event.target.tagName;
   const taskTitle = parentElement.childNodes[3].childNodes[3];
   const taskType = parentElement.childNodes[3].childNodes[7];
   const taskDiscription = parentElement.childNodes[3].childNodes[5];
   const submitButton = parentElement.childNodes[5].childNodes[1];
 
-   golbalTaskData = golbalTaskData.forEach((task) =>{
-    if (task.id === targetID){
-      return{...task,...updatedData}
+  const updatedData = {
+    title: taskTitle.innerHTML,
+    type: taskType.innerHTML,
+    discription: taskDiscription.innerHTML,
+
+  };
+  const updateGlobalTasks = golbalTaskData.map((task) => {
+    if (task.id === targetID) {
+      console.log({ ...task, ...updatedData });
+      return { ...task, ...updatedData };
     }
     return task;
   });
-saveToLocalStorage();
+
+  golbalTaskData = updateGlobalTasks;
+
+  saveToLocalStorage();
 
     taskTitle.setAttribute("contenteditable", "false");
     taskType.setAttribute("contenteditable", "false");
@@ -173,3 +177,4 @@ saveToLocalStorage();
     submitButton.innerHTML = "Open Task";
 
   };
+  
